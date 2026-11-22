@@ -1,4 +1,4 @@
-const DEFAULT_TIMEOUT_MS = 2500;
+const DEFAULT_TIMEOUT_MS = 12_000;
 const POLICY_EVENT_TYPE = 'subagent/model-selection-policy';
 
 export const name = 'harness-enhanced-subagent-models';

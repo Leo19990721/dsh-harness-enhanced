@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Subagent auto-allow all models",
-    "description": "Automatically discover all currently available models (including future newly added models) when starting a new session so subagents can select them without manual allowlist edits. Disable to fall back to the manual checkboxes in Subagent settings."
+    "description": "Automatically discover all currently available models (including future newly added models) when creating a session or opening an older session without a recorded policy, so subagents can select them without manual allowlist edits. Disable to fall back to the manual checkboxes in Subagent settings."
   }
 }

@@ -34,6 +34,10 @@ function withTimeout(promise, timeoutMs, signal) {
 }
 
 function hasExistingPolicy(session) {
+  if (typeof session?.snapshotEvents === 'function') {
+    const events = session.snapshotEvents();
+    if (Array.isArray(events)) return events.some(event => event?.type === POLICY_EVENT_TYPE);
+  }
   if (typeof session?.eventAt !== 'function') return false;
   const cursor = typeof session.cursor === 'number' && Number.isInteger(session.cursor) ? session.cursor : -1;
   for (let seq = 0; seq <= cursor; seq++) {
@@ -155,12 +159,11 @@ export function apply(ctx, config = {}) {
     ctx.on('llm/adapters-updated', warmCache);
     ctx.on('llm/models-updated', warmCache);
     // Run before native SubagentModelSelectionConfig on serial agent/created so
-    // new top-level sessions receive all live models automatically.
+    // fresh and previously-unpolarized top-level sessions receive all live models automatically.
     ctx.on('agent/created', async ({ agent, signal }) => {
       const target = agent?.session;
       if (!target || typeof target.append !== 'function') return;
       if (target.header?.origin === 'subagent') return;
-      if (target.firstLiveSeq !== 0) return;
       if (typeof target.eventAt === 'function' && target.eventAt(0)?.type === 'session/end-seed') return;
       if (hasExistingPolicy(target)) return;
 

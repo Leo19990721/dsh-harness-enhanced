@@ -165,7 +165,7 @@ test('empty fulfilled model list clears stale cache for logged-out provider', as
   ctx.dispose();
 });
 
-test('skips child subagent sessions, existing sessions, seeded sessions, and already-authorized sessions', async () => {
+test('skips child subagent sessions, seeded sessions, and already-authorized sessions, while authorizing old sessions without policy', async () => {
   const ctx = createFakeContext({
     providers: [{ id: 'codex' }],
     modelsByProvider: { codex: [{ id: 'gpt-6.2-sol' }] },
@@ -173,17 +173,26 @@ test('skips child subagent sessions, existing sessions, seeded sessions, and alr
   apply(ctx);
 
   const child = createFakeSession({ origin: 'subagent' });
-  const existing = createFakeSession({ firstLiveSeq: 3 });
   const seeded = createFakeSession({ events: [{ type: 'session/end-seed', data: {} }] });
   const preAuthorized = createFakeSession({
     events: [{ type: 'subagent/model-selection-policy', data: { allowedModels: [{ provider: 'x', model: 'y' }] } }],
   });
 
-  for (const session of [child, existing, seeded, preAuthorized]) {
+  for (const session of [child, seeded, preAuthorized]) {
     const before = session.log.length;
     await ctx.emitSerial('agent/created', { agent: { session } });
     assert.equal(session.log.length, before);
   }
+
+  // Existing pre-policy session (firstLiveSeq > 0, no policy event yet) receives live models
+  const oldSession = createFakeSession({
+    firstLiveSeq: 3,
+    events: [{ type: 'turn/start', data: { turn: 1 } }, { type: 'turn/end', data: { turn: 1 } }],
+  });
+  await ctx.emitSerial('agent/created', { agent: { session: oldSession } });
+  const added = oldSession.log.filter(e => e.type === 'subagent/model-selection-policy');
+  assert.equal(added.length, 1);
+  assert.deepEqual(added[0].data.allowedModels, [{ provider: 'codex', model: 'gpt-6.2-sol' }]);
   ctx.dispose();
 });
 

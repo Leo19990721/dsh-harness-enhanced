@@ -75,7 +75,7 @@
 ## 第 4 步：下载插件包并生成桌面一次性安装脚本
 
 1. 将以下 3 个自研插件包下载到 `%TEMP%\dsh-install\`（先确保目录存在）：
-   - `https://github.com/Leo19990721/dsh-plugin-subscriptions-enhanced/releases/download/v0.3.7/dsh-subscriptions-enhanced-0.3.7.tgz`
+   - `https://github.com/Leo19990721/dsh-plugin-subscriptions-enhanced/releases/download/v0.3.8/dsh-subscriptions-enhanced-0.3.8.tgz`
    - `https://github.com/Leo19990721/dsh-toolbox-enhanced/releases/download/v0.1.6/dsh-toolbox-enhanced-0.1.6.tgz`
    - `https://github.com/Leo19990721/dsh-harness-enhanced/releases/download/v0.1.6/local-dsh-harness-enhanced-0.1.6.tgz`
 2. 在当前用户桌面生成 `安装DSH插件.cmd`（UTF-8 无 BOM 或 GBK 兼容，确保中文不乱码），执行逻辑如下：
@@ -84,7 +84,7 @@
      1. `dsh-toolbox-ui`
      2. `dsh-windows-mcp`
      3. `dshmarket`
-     4. `%TEMP%\dsh-install\dsh-subscriptions-enhanced-0.3.7.tgz`
+     4. `%TEMP%\dsh-install\dsh-subscriptions-enhanced-0.3.8.tgz`
      5. `%TEMP%\dsh-install\dsh-toolbox-enhanced-0.1.6.tgz`
      6. `%TEMP%\dsh-install\local-dsh-harness-enhanced-0.1.6.tgz`
    - 任何一步失败时打印错误信息并 `pause`；

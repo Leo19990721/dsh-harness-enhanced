@@ -37,6 +37,7 @@ function setup({ cold = false, meta, revision = 'r1', header = HEADER, getEvents
     effect(run) { stop = run(); },
   };
   apply({ inject(keys, register) {
+    if (keys.includes('webServer')) return;
     assert.deepEqual(keys, ['connection', 'sessions', 'sessionQuery']);
     if (hasServices) register(scope);
   } });

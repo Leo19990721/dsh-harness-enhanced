@@ -1,5 +1,6 @@
 import { FAILED_MESSAGE_PATH, MAX_RECOVERY_EVENTS, failureProof, isCompactionId, isSessionId, sameFailureProof } from './failure-proof.js';
 import { recoverFailedText } from './failed-message.js';
+import { registerDirectoryLinkHost } from './directory-link-host.js';
 
 const HEADERS = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
 const MAX_STORED_BYTES = 8 * 1024 * 1024;
@@ -18,6 +19,7 @@ function numberParam(params, name) {
 }
 
 export function apply(ctx) {
+  registerDirectoryLinkHost(ctx);
   // The Host read is optional. Both sidebar enhancements remain client-only.
   ctx.inject(['connection', 'sessions', 'sessionQuery'], scope => {
     const lifetime = new AbortController();

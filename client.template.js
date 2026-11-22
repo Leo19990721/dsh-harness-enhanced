@@ -3,6 +3,7 @@ window.__ModuleLoader__.load({
   factory(require) {
     /* __EXPANSION_CONTROLLER__ */
     /* __FAILED_MESSAGE_UI__ */
+    /* __DIRECTORY_LINK_CLIENT__ */
 
     const overflow = 'button[type="button"][data-row-key^="overflow:"][aria-expanded]';
     const listArea = '[data-sidebar-list-area]';
@@ -130,6 +131,9 @@ window.__ModuleLoader__.load({
       apply(ctx) {
         ctx.effect(() => attach(window), 'harness-enhanced: expand remaining sessions');
         hideSidebarMore(ctx.slots);
+        ctx.inject(['slots', 'sessions', 'connection', 'locale', 'contextMenus'], scope => {
+          scope.effect(() => attachDirectoryLinks(scope), 'harness-enhanced: local Chat links');
+        });
         ctx.inject(['slots', 'locale', 'layout', 'sessions', 'conversation', 'connection'], scope => {
           registerFailedMessage(scope, require('react'));
         });

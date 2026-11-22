@@ -1,6 +1,6 @@
 {
   "name": "@local/dsh-harness-enhanced",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "type": "module",
   "description": "Expand sessions, simplify the sidebar, recover unsent text, and compact context by route.",
@@ -13,7 +13,7 @@
     "./locale/*.json": "./locale/*.json",
     "./icon": "./icon.svg"
   },
-  "files": ["index.js", "failed-message.js", "failure-proof.js", "client.js", "compaction-backend.js", "compaction.js", "compaction-policy.js", "cordis.patch.yml", "locale/**/*.json", "icon.svg", "README.md"],
+  "files": ["index.js", "failed-message.js", "failure-proof.js", "directory-link-host.js", "local-link-path.js", "client.js", "compaction-backend.js", "compaction.js", "compaction-policy.js", "cordis.patch.yml", "locale/**/*.json", "icon.svg", "README.md"],
   "scripts": { "build": "node build.mjs", "test": "node build.mjs --check && node --test" },
   "dsh": {
     "bundle": { "patch": "./cordis.patch.yml" },

@@ -82,6 +82,7 @@ test('the generated module registers only the known turn-tail extension and keep
   loaded.factory(name => { assert.equal(name, 'react'); return react; }).apply({
     slots, effect,
     inject(keys, mount) {
+      if (keys.includes('contextMenus')) return;
       assert.deepEqual([...keys], ['slots', 'locale', 'layout', 'sessions', 'conversation', 'connection']);
       mount({ slots, effect, connection: { isLoopback: true } });
     },

@@ -2,15 +2,19 @@
 
 ## 快速安装
 
-在 GitHub 用户 `Leo19990721` 的 [Harness Enhanced v0.1.5 Release](https://github.com/Leo19990721/dsh-harness-enhanced/releases/tag/v0.1.5) 下载 `local-dsh-harness-enhanced-0.1.5.tgz`（不要选 Source code 压缩包）。在 DSH 「插件 → 添加插件」粘贴该 `.tgz` 的绝对路径即可，不需要把网页或下载链接的内容直接传给命令行执行。适配基准为 DSH `0.2.2-rc.5`。
+在 GitHub 用户 `Leo19990721` 的 [Harness Enhanced v0.1.6 Release](https://github.com/Leo19990721/dsh-harness-enhanced/releases/tag/v0.1.6) 下载 `local-dsh-harness-enhanced-0.1.6.tgz`（不要选 Source code 压缩包）。在 DSH 「插件 → 添加插件」粘贴该 `.tgz` 的绝对路径即可，不需要把网页或下载链接的内容直接传给命令行执行。适配基准为 DSH `0.2.2-rc.5`。
 
 办公工作规则见 [办公版 AGENTS.md](docs/office-AGENTS.md)。Windows 批量部署用 [install-plugins.ps1](docs/install-plugins.ps1)：默认只下载、校验并暂存四个版本固定的安装包。若确认要安装，请先完全退出 Desktop，再加 `-Install`；脚本不会自动打开 Desktop。
 
 不克隆仓库时，可先[查看脚本](docs/install-plugins.ps1)，再用 PowerShell 7 运行下面一行。去掉 `-Install` 即只下载和校验。
 
 ```powershell
-$script = Join-Path (Get-Location).Path ('dsh-install-plugins-' + [Guid]::NewGuid().ToString('N') + '.ps1'); Invoke-WebRequest -ErrorAction Stop 'https://raw.githubusercontent.com/Leo19990721/dsh-harness-enhanced/v0.1.5/docs/install-plugins.ps1' -OutFile $script; & $script -Install
+$script = Join-Path (Get-Location).Path ('dsh-install-plugins-' + [Guid]::NewGuid().ToString('N') + '.ps1'); Invoke-WebRequest -ErrorAction Stop 'https://raw.githubusercontent.com/Leo19990721/dsh-harness-enhanced/v0.1.6/docs/install-plugins.ps1' -OutFile $script; & $script -Install
 ```
+
+## 打开聊天中的本地目录
+
+在本机 Windows DSH 聊天中，点击绝对路径的目录链接会在资源管理器打开。旧消息中的 `file:///` 本地链接也能使用：文件仍走 DSH 预览，目录走资源管理器。网页链接不变；远程、网络共享和重解析点不走这条本机打开路径。
 
 ## 一键展开会话
 

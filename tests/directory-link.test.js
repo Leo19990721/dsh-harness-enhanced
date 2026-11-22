@@ -119,9 +119,9 @@ test('launcher is fixed, shell-free, and accepts path only as data', async () =>
   };
   assert.equal(await openWindowsDirectory(path, timer.signal, true, run, 'C:\\Windows'), 200);
   assert.match(program, /DriveType[^\n]*::Fixed/);
-  assert.match(program, /::ReparsePoint/);
+  assert.match(program, /DriveType[^\n]*::Removable/);
   assert.match(program, /\$folder\.Self\.Path/);
-  assert.match(program, /\$shell\.Explore\(\$p\)/);
+  assert.match(program, /\$shell\.Explore\(\$resolved\)/);
   assert.doesNotMatch(program, /Start-Process|Invoke-Expression|ShellExecute/);
   assert.equal(await openWindowsDirectory('D:/not-canonical', timer.signal, false, run, 'C:\\Windows'), 404);
 });

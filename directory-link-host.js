@@ -72,26 +72,24 @@ function readBody(req, signal) {
 const verifyAndExplore = `
 $ErrorActionPreference = 'Stop'
 $p = $env:DSH_DIRECTORY_LINK_PATH
-if ([IO.DriveInfo]::new($p.Substring(0,3)).DriveType -ne [IO.DriveType]::Fixed) { exit 4 }
-$current = $p.Substring(0,3)
-$parts = $p.Substring(3).Split('\\', [StringSplitOptions]::RemoveEmptyEntries)
+$driveType = [IO.DriveInfo]::new($p.Substring(0,3)).DriveType
+if ($driveType -ne [IO.DriveType]::Fixed -and $driveType -ne [IO.DriveType]::Removable) { exit 4 }
 try {
-  for ($i = 0; $i -le $parts.Length; $i++) {
-    $attrs = [IO.File]::GetAttributes($current)
-    if ($attrs -band [IO.FileAttributes]::ReparsePoint) { exit 4 }
-    if (-not ($attrs -band [IO.FileAttributes]::Directory)) {
-      if ($i -eq $parts.Length -and -not ($attrs -band [IO.FileAttributes]::Device)) { exit 3 }
-      exit 4
-    }
-    if ($i -lt $parts.Length) { $current = [IO.Path]::Combine($current, $parts[$i]) }
+  $attrs = [IO.File]::GetAttributes($p)
+  if (-not ($attrs -band [IO.FileAttributes]::Directory)) {
+    if (-not ($attrs -band [IO.FileAttributes]::Device)) { exit 3 }
+    exit 4
   }
 } catch { exit 4 }
 if ($env:DSH_DIRECTORY_LINK_INSPECT -eq '1') { exit 4 }
 $shell = New-Object -ComObject Shell.Application
 $folder = $shell.NameSpace($p)
-if ($null -eq $folder -or -not $folder.Self.IsFileSystem -or -not $folder.Self.IsFolder -or
-    -not [String]::Equals($folder.Self.Path, $p, [StringComparison]::OrdinalIgnoreCase)) { exit 4 }
-$shell.Explore($p)
+if ($null -eq $folder -or -not $folder.Self.IsFileSystem -or -not $folder.Self.IsFolder) { exit 4 }
+$resolved = $folder.Self.Path
+if (-not $resolved -or $resolved.Length -lt 3) { exit 4 }
+$rDrive = [IO.DriveInfo]::new($resolved.Substring(0,3)).DriveType
+if ($rDrive -ne [IO.DriveType]::Fixed -and $rDrive -ne [IO.DriveType]::Removable) { exit 4 }
+$shell.Explore($resolved)
 `;
 
 export async function openWindowsDirectory(path, signal, inspect, run = promisify(execFile), systemRoot = process.env.SystemRoot) {

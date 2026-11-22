@@ -77,7 +77,7 @@
 1. 将以下 3 个自研插件包下载到 `%TEMP%\dsh-install\`（先确保目录存在）：
    - `https://github.com/Leo19990721/dsh-plugin-subscriptions-enhanced/releases/download/v0.4.4/dsh-subscriptions-enhanced-0.4.4.tgz`
    - `https://github.com/Leo19990721/dsh-toolbox-enhanced/releases/download/v0.1.8/dsh-toolbox-enhanced-0.1.8.tgz`
-   - `https://github.com/Leo19990721/dsh-harness-enhanced/releases/download/v0.1.7/local-dsh-harness-enhanced-0.1.7.tgz`
+   - `https://github.com/Leo19990721/dsh-harness-enhanced/releases/download/v0.1.8/local-dsh-harness-enhanced-0.1.8.tgz`
 2. 在当前用户桌面生成 `安装DSH插件.cmd`（UTF-8 无 BOM 或 GBK 兼容，确保中文不乱码），执行逻辑如下：
    - 检查 `DeepSeek Harness.exe` 是否仍在运行；如仍在运行，提示用户彻底退出 DSH Desktop（包括右下角托盘图标）后按任意键继续，直到进程完全退出；
    - 使用官方 `%LOCALAPPDATA%\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd plugin --profile desktop add` 依次安装以下 6 个插件（**不要安装 `ds-harness-remote` 或 `dsh-remote-enhanced`**）：
@@ -86,7 +86,7 @@
      3. `dshmarket`
      4. `%TEMP%\dsh-install\dsh-subscriptions-enhanced-0.4.4.tgz`
      5. `%TEMP%\dsh-install\dsh-toolbox-enhanced-0.1.8.tgz`
-     6. `%TEMP%\dsh-install\local-dsh-harness-enhanced-0.1.7.tgz`
+     6. `%TEMP%\dsh-install\local-dsh-harness-enhanced-0.1.8.tgz`
    - 任何一步失败时打印错误信息并 `pause`；
    - 全部成功后打印「全部插件安装完成！请关闭本窗口，再手动重新打开 DeepSeek Harness Desktop。」并 `pause`。
    - **严禁在脚本里自动启动 `DeepSeek Harness.exe`**（避免关闭命令窗口时连带关闭 DSH）。

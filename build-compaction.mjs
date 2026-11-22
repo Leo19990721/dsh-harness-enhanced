@@ -17,7 +17,12 @@ const { getDshRuntimeVersion } = await import(pathToFileURL(require.resolve('@de
 assert.equal(getDshRuntimeVersion(), '0.2.2-rc.5');
 const path = id => join(resolve(root), 'node_modules', '@deepseek-ai', 'dsh-web-app', 'presets', `${id}.patch.yml`);
 const inputs = ['standard', 'ptc', 'cordis', 'minimal'].map(id => [id, path(id)]);
-const output = [{ insert: [{ id: 'harness-enhanced', name: '@local/dsh-harness-enhanced' }] }];
+const output = [{
+  insert: [
+    { id: 'harness-enhanced', name: '@local/dsh-harness-enhanced' },
+    { id: 'subagent-all-models', name: '@local/dsh-harness-enhanced/subagent-models' },
+  ],
+}];
 for (const [id, path] of inputs) {
   const source = yaml.load(await readFile(path, 'utf8'), { schema: entryListSchema });
   const matches = source.flatMap(patch => patch.insert ?? []).filter(row => row.id === `preset-${id}`);

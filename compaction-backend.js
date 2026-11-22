@@ -10,8 +10,7 @@ export async function apply(ctx, { enhanced = true, ...config } = {}) {
   let manual;
   let backend;
   try {
-    const { getDshRuntimeVersion } = await import('@deepseek-ai/dsh-app-boot');
-    if (enhanced && config.auto !== false && getDshRuntimeVersion() === '0.2.2-rc.5') {
+    if (enhanced && config.auto !== false) {
       const [{ installCompaction }, llmApi, sessionApi, compactionApi, { SUMMARY_CAP }] = await Promise.all([
         import('./compaction.js'), import('@deepseek-ai/dsh-llm'), import('@deepseek-ai/dsh-session'),
         import('@deepseek-ai/dsh-compaction'), import('./compaction-policy.js'),

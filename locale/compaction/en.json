@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Context compaction",
+    "description": "Use the model route's actual input budget. Test old tool-result trims before choosing whether to compact the unchanged conversation prefix."
+  }
+}

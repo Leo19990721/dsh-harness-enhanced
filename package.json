@@ -1,0 +1,26 @@
+{
+  "name": "@local/dsh-harness-enhanced",
+  "version": "0.1.5",
+  "private": true,
+  "type": "module",
+  "description": "Expand sessions, simplify the sidebar, recover unsent text, and compact context by route.",
+  "exports": {
+    ".": "./index.js",
+    "./compaction": "./compaction-backend.js",
+    "./compaction/locale/*.json": "./locale/compaction/*.json",
+    "./compaction/icon": "./icon.svg",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": ["index.js", "failed-message.js", "failure-proof.js", "client.js", "compaction-backend.js", "compaction.js", "compaction-policy.js", "cordis.patch.yml", "locale/**/*.json", "icon.svg", "README.md"],
+  "scripts": { "build": "node build.mjs", "test": "node build.mjs --check && node --test" },
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": ["@deepseek-ai/dsh-client-ui-workspace"]
+    }
+  }
+}

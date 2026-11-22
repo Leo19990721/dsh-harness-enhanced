@@ -1,0 +1,10 @@
+.local-install/
+node_modules/
+/tmp/
+/temp/
+*.tgz
+*.log
+*.tmp
+*.bak
+.env
+.env.*

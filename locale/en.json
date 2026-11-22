@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Harness Enhanced",
+    "description": "Expand all remaining sessions in the chosen workspace with one click and keep native collapse behavior. Remove the left sidebar's More button and keep panel shortcuts. Recover unsent plain text when switching models fails during compaction. Compact by the active model route’s input budget while preserving cached history when possible."
+  }
+}

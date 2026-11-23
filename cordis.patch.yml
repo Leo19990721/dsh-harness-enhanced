@@ -4,6 +4,8 @@
       name: '@local/dsh-harness-enhanced'
     - id: subagent-all-models
       name: '@local/dsh-harness-enhanced/subagent-models'
+    - id: goal-awareness
+      name: '@local/dsh-harness-enhanced/goal-awareness'
 - id: preset-standard
   name: '@deepseek-ai/dsh-agent-preset'
   config:

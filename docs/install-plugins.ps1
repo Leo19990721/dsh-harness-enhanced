@@ -44,7 +44,7 @@ $bundles = @(
     @{ Repo = 'dsh-plugin-subscriptions-enhanced'; Version = '0.4.12'; Asset = 'dsh-subscriptions-enhanced-0.4.12.tgz'; Name = 'dsh-subscriptions-enhanced' }
     @{ Repo = 'dsh-toolbox-enhanced'; Version = '0.1.8'; Asset = 'dsh-toolbox-enhanced-0.1.8.tgz'; Name = '@local/dsh-toolbox-enhanced' }
     @{ Repo = 'dsh-remote-enhanced'; Version = '0.1.10'; Asset = 'dsh-remote-enhanced-0.1.10.tgz'; Name = '@local/dsh-remote-enhanced' }
-    @{ Repo = 'dsh-harness-enhanced'; Version = '0.1.10'; Asset = 'local-dsh-harness-enhanced-0.1.10.tgz'; Name = '@local/dsh-harness-enhanced' }
+    @{ Repo = 'dsh-harness-enhanced'; Version = '0.1.11'; Asset = 'local-dsh-harness-enhanced-0.1.11.tgz'; Name = '@local/dsh-harness-enhanced' }
 )
 
 $project = Split-Path -Parent $PSScriptRoot

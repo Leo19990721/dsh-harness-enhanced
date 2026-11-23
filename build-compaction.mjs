@@ -21,6 +21,7 @@ const output = [{
   insert: [
     { id: 'harness-enhanced', name: '@local/dsh-harness-enhanced' },
     { id: 'subagent-all-models', name: '@local/dsh-harness-enhanced/subagent-models' },
+    { id: 'goal-awareness', name: '@local/dsh-harness-enhanced/goal-awareness' },
   ],
 }];
 for (const [id, path] of inputs) {

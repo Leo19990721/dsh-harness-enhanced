@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Session goal awareness",
+    "description": "Shows the model the state of an unfinished goal so it can mark the goal complete when achieved or guide the user to manage it. Adds no tokens when there is no unfinished goal."
+  }
+}

@@ -2,14 +2,14 @@
 
 ## 快速安装
 
-在 GitHub 用户 `Leo19990721` 的 [Harness Enhanced v0.1.6 Release](https://github.com/Leo19990721/dsh-harness-enhanced/releases/tag/v0.1.6) 下载 `local-dsh-harness-enhanced-0.1.6.tgz`（不要选 Source code 压缩包）。在 DSH 「插件 → 添加插件」粘贴该 `.tgz` 的绝对路径即可，不需要把网页或下载链接的内容直接传给命令行执行。适配基准为 DSH `0.2.2-rc.5`。
+在 GitHub 用户 `Leo19990721` 的 [Harness Enhanced v0.1.11 Release](https://github.com/Leo19990721/dsh-harness-enhanced/releases/tag/v0.1.11) 下载 `local-dsh-harness-enhanced-0.1.11.tgz`（不要选 Source code 压缩包）。在 DSH 「插件 → 添加插件」粘贴该 `.tgz` 的绝对路径即可，不需要把网页或下载链接的内容直接传给命令行执行。适配基准为 DSH `0.2.2-rc.5`。
 
 办公工作规则见 [办公版 AGENTS.md](docs/office-AGENTS.md)。Windows 批量部署用 [install-plugins.ps1](docs/install-plugins.ps1)：默认只下载、校验并暂存四个版本固定的安装包。若确认要安装，请先完全退出 Desktop，再加 `-Install`；脚本不会自动打开 Desktop。
 
 不克隆仓库时，可先[查看脚本](docs/install-plugins.ps1)，再用 PowerShell 7 运行下面一行。去掉 `-Install` 即只下载和校验。
 
 ```powershell
-$script = Join-Path (Get-Location).Path ('dsh-install-plugins-' + [Guid]::NewGuid().ToString('N') + '.ps1'); Invoke-WebRequest -ErrorAction Stop 'https://raw.githubusercontent.com/Leo19990721/dsh-harness-enhanced/v0.1.6/docs/install-plugins.ps1' -OutFile $script; & $script -Install
+$script = Join-Path (Get-Location).Path ('dsh-install-plugins-' + [Guid]::NewGuid().ToString('N') + '.ps1'); Invoke-WebRequest -ErrorAction Stop 'https://raw.githubusercontent.com/Leo19990721/dsh-harness-enhanced/v0.1.11/docs/install-plugins.ps1' -OutFile $script; & $script -Install
 ```
 
 ## 打开聊天中的本地目录
@@ -45,6 +45,16 @@ $script = Join-Path (Get-Location).Path ('dsh-install-plugins-' + [Guid]::NewGui
 `/compact` 仍走原生命令和原有设置；`read`、终端和结果溢写仍用 DSH 的现有上限。Google 订阅的 Antigravity CLI 自管历史，不用 DSH 的对应历史触发新策略；订阅包提供的「写作模式」及其他自定义预设未改。切换到更小的窗口且旧历史已经过线时，保留 rc.5 的发送前检查，所以原来的「复制原文 / 放回输入框」仍可用。
 
 新策略加载失败时，该预设回到原生压缩。停用或卸载本插件会移除预设覆盖，之后启动的会话使用原生策略；运行中的会话按 DSH 规则保留已绑定的预设版本，完整重启 DSH 后统一切换。只想恢复某个内置预设的原生压缩、保留其他增强时，可在该预设的 `compaction` 组中给 `compaction-basic` 行设置 `config: { enhanced: false }`。
+
+## 子智能体列表收纳与模型展示
+
+顶部「子智能体」下拉菜单会自动将**正在运行**的子智能体置顶，其余按最新在前排序；除进行中、当前查看项、手动还原项及最近 4 条外，更早完成的子智能体会折叠收纳到底部「历史子智能体」中，同时支持一键「收纳已完成」和单条收纳/移出，不改动原生会话日志，也不影响后续通过 `send_message` 唤醒。若已收纳的子智能体再次开始运行，会自动浮回活跃区。
+
+每条子智能体记录会显示所用的模型与思考强度；进入子智能体会话（主视图或右侧栏）后，也会显示只读模型标签。
+
+## 会话目标感知
+
+内置独立开关模块 `goal-awareness`（默认启用）。仅当当前会话存在未完成目标（进行中、受阻或已暂停）时，通过 DSH 原生运行时上下文向模型提示目标的 `id`、`revision`、状态与阻塞原因，方便模型在条件满足后主动调用 `update_goal` 收尾或提醒用户清理过时目标；没有未完成目标时不增加任何 token 开销。
 
 ## 开发
 

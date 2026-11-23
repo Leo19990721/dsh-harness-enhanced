@@ -4,6 +4,7 @@ window.__ModuleLoader__.load({
     /* __EXPANSION_CONTROLLER__ */
     /* __FAILED_MESSAGE_UI__ */
     /* __DIRECTORY_LINK_CLIENT__ */
+    /* __SUBAGENT_UI_CLIENT__ */
 
     const overflow = 'button[type="button"][data-row-key^="overflow:"][aria-expanded]';
     const listArea = '[data-sidebar-list-area]';
@@ -136,6 +137,11 @@ window.__ModuleLoader__.load({
         });
         ctx.inject(['slots', 'locale', 'layout', 'sessions', 'conversation', 'connection'], scope => {
           registerFailedMessage(scope, require('react'));
+        });
+        ctx.inject(['slots', 'sessions', 'uiWorkspace', 'sidebarRight', 'locale'], scope => {
+          let primitives;
+          try { primitives = require('@deepseek-ai/dsh-client-ui-primitives'); } catch {}
+          registerSubagentUi(scope, require('react'), require('react-dom'), primitives);
         });
       },
     };

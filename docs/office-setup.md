@@ -74,21 +74,35 @@
 
 ## 第 4 步：下载插件包并生成桌面一次性安装脚本
 
-1. 将以下 3 个自研插件包下载到 `%TEMP%\dsh-install\`（先确保目录存在）：
+1. 将以下 3 个自研插件包下载到持久化目录 `%USERPROFILE%\.dsh\plugin-packages\`（**不要放 `%TEMP%`**，因 `dsh plugin add` 会保留对 `.tgz` 的路径引用；先下到 `.part`，用 `tar.exe -xOzf "<.part>" package/package.json` 校验 `name`/`version`/`dsh.bundle.patch` 通过后再改名为 `.tgz`）：
    - `https://github.com/Leo19990721/dsh-plugin-subscriptions-enhanced/releases/download/v0.4.12/dsh-subscriptions-enhanced-0.4.12.tgz`
    - `https://github.com/Leo19990721/dsh-toolbox-enhanced/releases/download/v0.1.8/dsh-toolbox-enhanced-0.1.8.tgz`
    - `https://github.com/Leo19990721/dsh-harness-enhanced/releases/download/v0.1.11/local-dsh-harness-enhanced-0.1.11.tgz`
-2. 在当前用户桌面生成 `安装DSH插件.cmd`（UTF-8 无 BOM 或 GBK 兼容，确保中文不乱码），执行逻辑如下：
-   - 检查 `DeepSeek Harness.exe` 是否仍在运行；如仍在运行，提示用户彻底退出 DSH Desktop（包括右下角托盘图标）后按任意键继续，直到进程完全退出；
-   - 使用官方 `%LOCALAPPDATA%\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd plugin --profile desktop add` 依次安装以下 6 个插件（**不要安装 `ds-harness-remote` 或 `dsh-remote-enhanced`**）：
-     1. `dsh-toolbox-ui`
-     2. `dsh-windows-mcp`
-     3. `dshmarket`
-     4. `%TEMP%\dsh-install\dsh-subscriptions-enhanced-0.4.12.tgz`
-     5. `%TEMP%\dsh-install\dsh-toolbox-enhanced-0.1.8.tgz`
-     6. `%TEMP%\dsh-install\local-dsh-harness-enhanced-0.1.11.tgz`
-   - 任何一步失败时打印错误信息并 `pause`；
-   - 全部成功后打印「全部插件安装完成！请关闭本窗口，再手动重新打开 DeepSeek Harness Desktop。」并 `pause`。
+2. 定位本机官方 CLI `dsh.cmd`（默认 `%LOCALAPPDATA%\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd`，如不在默认路径则从运行中的 `DeepSeek Harness.exe` 反推），在当前用户桌面生成 `安装DSH插件.cmd`（**必须 UTF-8 无 BOM** + `chcp 65001 >nul`，**不要安装 `ds-harness-remote` 或 `dsh-remote-enhanced`**，调用 `dsh.cmd` **必须加 `call`**，并一次性把全部 6 个插件传给 `add --ignore-scripts`）：
+   ```bat
+   @echo off
+   chcp 65001 >nul
+   setlocal
+
+   set "DSH_CLI=<实际存在的 dsh.cmd 绝对路径>"
+   :wait_close
+   tasklist /FI "IMAGENAME eq DeepSeek Harness.exe" 2>nul | find /I "DeepSeek Harness.exe" >nul
+   if not errorlevel 1 (
+       echo 检测到 DeepSeek Harness 仍在运行，请先彻底退出（含右下角托盘图标）后按任意键继续...
+       pause >nul
+       goto wait_close
+   )
+
+   call "%DSH_CLI%" plugin --profile desktop add --ignore-scripts dsh-toolbox-ui dsh-windows-mcp dshmarket "<当前用户>\.dsh\plugin-packages\dsh-subscriptions-enhanced-0.4.12.tgz" "<当前用户>\.dsh\plugin-packages\dsh-toolbox-enhanced-0.1.8.tgz" "<当前用户>\.dsh\plugin-packages\local-dsh-harness-enhanced-0.1.11.tgz"
+   if errorlevel 1 (
+       echo 插件安装失败，请检查上方报错信息。
+       pause
+       exit /b 1
+   )
+
+   echo 全部插件安装完成！请关闭本窗口，再手动重新打开 DeepSeek Harness Desktop。
+   pause
+   ```
    - **严禁在脚本里自动启动 `DeepSeek Harness.exe`**（避免关闭命令窗口时连带关闭 DSH）。
 
 ---

@@ -20,12 +20,12 @@
 | `@local/dsh-toolbox-enhanced` | `0.1.8` | `dsh-toolbox-enhanced-0.1.8.tgz` | `https://github.com/Leo19990721/dsh-toolbox-enhanced/releases/download/v0.1.8/dsh-toolbox-enhanced-0.1.8.tgz` |
 | `@local/dsh-harness-enhanced` | `0.1.11` | `local-dsh-harness-enhanced-0.1.11.tgz` | `https://github.com/Leo19990721/dsh-harness-enhanced/releases/download/v0.1.11/local-dsh-harness-enhanced-0.1.11.tgz` |
 
-3. **判断是否纳入本次更新**（满足任一条件即纳入）：
-   - 当前未安装，或实装 `version` 不等于目标版本；
-   - `profiles\desktop\package.json` 里该插件的 `file:` 路径仍指向 `Temp` 临时目录，或指向的 `.tgz` 文件在磁盘上已不存在（把旧的临时目录引用一并迁到 `%USERPROFILE%\.dsh\plugin-packages\`，防止 `pnpm` 后续解析报错）。
-4. 对每个纳入更新的插件，使用 PowerShell `Invoke-WebRequest -MaximumRedirection 5 -TimeoutSec 120`（自动沿用系统代理）：
-   - 先下载到 `%USERPROFILE%\.dsh\plugin-packages\<文件名>.part`；
-   - 用系统自带 `tar.exe -xOzf "<.part路径>" package/package.json` 解析 JSON，校验 `name` 精确等于插件名、`version` 精确等于目标版本，且 `dsh.bundle.patch` 非空（防止下载到 0 字节、截断包或网络拦截页面）；
+3. **只升级，不降级**。按语义版本（SemVer）比较，不按字符串排序（如 `0.4.9` 低于 `0.4.13`）：
+   - 未安装（既无依赖记录，也无安装清单），或实装版本低于表中版本：安装或升级到表中版本。
+   - 实装版本等于或高于表中版本，且原引用正常：跳过。若该插件的 `file:` 仍指向 `Temp`，或引用的 `.tgz` 已丢失，只迁移或补回**当前实装的同版本包**：优先复制仍可读取的原包，否则从原发布仓库下载同版本包。不要用表中较旧的包代替。
+   - 有依赖记录但查不到实装版本时，不要当作未安装；先用原包清单或锁文件确认版本。若仍无法确认版本，或需要修复的 `file:` 引用找不到同版本包，说明具体问题，不生成可能降级或因缺包而失败的脚本。
+4. 将纳入本次安装、升级或迁移的归档先暂存为 `%USERPROFILE%\.dsh\plugin-packages\<文件名>.part`。需要下载时，使用 PowerShell `Invoke-WebRequest -MaximumRedirection 5 -TimeoutSec 120`（沿用系统代理）：
+   - 用系统自带 `tar.exe -xOzf "<.part路径>" package/package.json` 解析 JSON，核对 `name`、`version` 和非空的 `dsh.bundle.patch`。安装或升级核对表中版本；修复引用核对当前版本。
    - 校验通过后再原子改名为 `%USERPROFILE%\.dsh\plugin-packages\<文件名>`。若任意一个下载或校验失败，删除该 `.part` 并直接向用户报告原因，不要生成残缺脚本。
 
 ---
@@ -42,8 +42,8 @@
 
 ## 第 3 步：生成桌面一次性更新脚本（仅当第 1 步有待更新插件时）
 
-- 若第 1 步确认 3 个插件全部已是目标版本且引用路径均在持久目录且文件完好，跳过本步，无需生成桌面脚本。
-- 否则，先定位本机官方 CLI `dsh.cmd`：优先 `%LOCALAPPDATA%\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd`；若不在默认目录，尝试从正在运行的 `DeepSeek Harness.exe` 进程路径反推 `<安装目录>\resources\runtime\cli\bin\dsh.cmd`。确认文件存在后再写入脚本。
+- 第 1 步没有需要安装、升级或迁移的包时，跳过本步。若有版本未确认或失效引用未修复，先报告问题，不生成脚本。
+- 只有存在待处理的包且都已校验通过时，才定位本机官方 CLI `dsh.cmd`：优先 `%LOCALAPPDATA%\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd`；若不在默认目录，尝试从正在运行的 `DeepSeek Harness.exe` 进程路径反推 `<安装目录>\resources\runtime\cli\bin\dsh.cmd`。确认文件存在后再写入脚本。
 - 在当前用户桌面写入 `更新DSH插件.cmd`（**必须保存为 UTF-8 无 BOM**，避免首行 `@echo off` 报错；必须用 **`call`** 调用 `dsh.cmd`，并把所有待更新 `.tgz` 合并在**同一条** `add --ignore-scripts` 命令里一次性提交，防止旧临时路径残缺导致中途中断）。按下面模板填入实际展开的绝对路径：
 
 ```bat
@@ -90,6 +90,6 @@ pause
 ## 第 4 步：简洁汇报给用户
 
 用简短大白话汇报结果：
-- 哪些插件需要更新/迁移（从什么版本升到什么版本）、哪些已是最新；
+- 哪些插件需要安装、升级或同版本迁移，哪些已达目标版本或更高、无需处理；
 - `AGENTS.md` 是否有更新；
 - 若生成了桌面 `更新DSH插件.cmd`，提醒用户：**彻底退出 DSH Desktop（含右下角托盘图标）→ 双击桌面的 `更新DSH插件.cmd` → 跑完关闭窗口再手动重开 DSH**（桌面脚本用完可直接删除；`%USERPROFILE%\.dsh\plugin-packages\` 下的 `.tgz` 请保留勿删）。

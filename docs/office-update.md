@@ -16,7 +16,7 @@
 
 | 插件名 | 目标版本 | 文件名 | 下载地址 |
 | --- | --- | --- | --- |
-| `dsh-subscriptions-enhanced` | `0.4.12` | `dsh-subscriptions-enhanced-0.4.12.tgz` | `https://github.com/Leo19990721/dsh-plugin-subscriptions-enhanced/releases/download/v0.4.12/dsh-subscriptions-enhanced-0.4.12.tgz` |
+| `dsh-subscriptions-enhanced` | `0.4.13` | `dsh-subscriptions-enhanced-0.4.13.tgz` | `https://github.com/Leo19990721/dsh-plugin-subscriptions-enhanced/releases/download/v0.4.13/dsh-subscriptions-enhanced-0.4.13.tgz` |
 | `@local/dsh-toolbox-enhanced` | `0.1.8` | `dsh-toolbox-enhanced-0.1.8.tgz` | `https://github.com/Leo19990721/dsh-toolbox-enhanced/releases/download/v0.1.8/dsh-toolbox-enhanced-0.1.8.tgz` |
 | `@local/dsh-harness-enhanced` | `0.1.11` | `local-dsh-harness-enhanced-0.1.11.tgz` | `https://github.com/Leo19990721/dsh-harness-enhanced/releases/download/v0.1.11/local-dsh-harness-enhanced-0.1.11.tgz` |
 

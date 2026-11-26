@@ -16,11 +16,11 @@
 
 | 插件名 | 目标版本 | 文件名 | 下载地址 |
 | --- | --- | --- | --- |
-| `dsh-subscriptions-enhanced` | `0.4.13` | `dsh-subscriptions-enhanced-0.4.13.tgz` | `https://github.com/Leo19990721/dsh-plugin-subscriptions-enhanced/releases/download/v0.4.13/dsh-subscriptions-enhanced-0.4.13.tgz` |
+| `dsh-subscriptions-enhanced` | `0.4.14` | `dsh-subscriptions-enhanced-0.4.14.tgz` | `https://github.com/Leo19990721/dsh-plugin-subscriptions-enhanced/releases/download/v0.4.14/dsh-subscriptions-enhanced-0.4.14.tgz` |
 | `@local/dsh-toolbox-enhanced` | `0.1.8` | `dsh-toolbox-enhanced-0.1.8.tgz` | `https://github.com/Leo19990721/dsh-toolbox-enhanced/releases/download/v0.1.8/dsh-toolbox-enhanced-0.1.8.tgz` |
 | `@local/dsh-harness-enhanced` | `0.1.11` | `local-dsh-harness-enhanced-0.1.11.tgz` | `https://github.com/Leo19990721/dsh-harness-enhanced/releases/download/v0.1.11/local-dsh-harness-enhanced-0.1.11.tgz` |
 
-3. **只升级，不降级**。按语义版本（SemVer）比较，不按字符串排序（如 `0.4.9` 低于 `0.4.13`）：
+3. **只升级，不降级**。按语义版本（SemVer）比较，不按字符串排序（如 `0.4.9` 低于 `0.4.14`）：
    - 未安装（既无依赖记录，也无安装清单），或实装版本低于表中版本：安装或升级到表中版本。
    - 实装版本等于或高于表中版本，且原引用正常：跳过。若该插件的 `file:` 仍指向 `Temp`，或引用的 `.tgz` 已丢失，只迁移或补回**当前实装的同版本包**：优先复制仍可读取的原包，否则从原发布仓库下载同版本包。不要用表中较旧的包代替。
    - 有依赖记录但查不到实装版本时，不要当作未安装；先用原包清单或锁文件确认版本。若仍无法确认版本，或需要修复的 `file:` 引用找不到同版本包，说明具体问题，不生成可能降级或因缺包而失败的脚本。

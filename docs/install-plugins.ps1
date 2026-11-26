@@ -41,7 +41,7 @@ if ($Install) {
 
 $owner = 'Leo19990721'
 $bundles = @(
-    @{ Repo = 'dsh-plugin-subscriptions-enhanced'; Version = '0.4.13'; Asset = 'dsh-subscriptions-enhanced-0.4.13.tgz'; Name = 'dsh-subscriptions-enhanced' }
+    @{ Repo = 'dsh-plugin-subscriptions-enhanced'; Version = '0.4.14'; Asset = 'dsh-subscriptions-enhanced-0.4.14.tgz'; Name = 'dsh-subscriptions-enhanced' }
     @{ Repo = 'dsh-toolbox-enhanced'; Version = '0.1.8'; Asset = 'dsh-toolbox-enhanced-0.1.8.tgz'; Name = '@local/dsh-toolbox-enhanced' }
     @{ Repo = 'dsh-remote-enhanced'; Version = '0.1.12'; Asset = 'dsh-remote-enhanced-0.1.12.tgz'; Name = '@local/dsh-remote-enhanced' }
     @{ Repo = 'dsh-harness-enhanced'; Version = '0.1.11'; Asset = 'local-dsh-harness-enhanced-0.1.11.tgz'; Name = '@local/dsh-harness-enhanced' }
